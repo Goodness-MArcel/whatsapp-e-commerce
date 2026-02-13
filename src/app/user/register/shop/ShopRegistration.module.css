@@ -1,0 +1,989 @@
+/* app/register/shop/ShopRegistration.module.css */
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  width: 2000px;
+  height: 2000px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  top: -1000px;
+  right: -500px;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.container::after {
+  content: '';
+  position: absolute;
+  width: 2000px;
+  height: 2000px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+  bottom: -1000px;
+  left: -500px;
+  transform: rotate(25deg);
+  pointer-events: none;
+}
+
+/* Progress Bar */
+.progressContainer {
+  width: 100%;
+  max-width: 720px;
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 100px;
+  padding: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.progressSteps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.stepNumber {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.step.active .stepNumber {
+  background: white;
+  border-color: white;
+  color: #667eea;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+.step span {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.step.active span {
+  color: white;
+}
+
+.stepLine {
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 0.5rem;
+  position: relative;
+  top: -12px;
+}
+
+/* Card */
+.card {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-radius: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 720px;
+  padding: 2rem;
+  position: relative;
+  z-index: 10;
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Step Content */
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1f36;
+  margin-bottom: 0.375rem;
+  line-height: 1.2;
+  background: linear-gradient(135deg, #1a1f36 0%, #2a2f45 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Success Icon */
+.successIcon {
+  font-size: 3rem;
+  text-align: center;
+  animation: bounce 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* Account Info */
+.accountInfo {
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 1.25rem;
+  border: 1px solid #e5e7eb;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.infoLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4b5563;
+  min-width: 60px;
+}
+
+.infoValue {
+  font-size: 0.875rem;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+/* Form Layout */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.required {
+  color: #ef4444;
+  font-size: 0.75rem;
+}
+
+/* Input Fields */
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  color: #1f2937;
+  background: white;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.input:hover,
+.select:hover,
+.textarea:hover {
+  border-color: #9ca3af;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+  opacity: 0.7;
+  font-size: 0.813rem;
+}
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Input with Prefix (for WhatsApp) */
+.inputWithPrefix {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.inputWithPrefix:hover {
+  border-color: #9ca3af;
+}
+
+.inputWithPrefix:focus-within {
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.prefix {
+  padding: 0.625rem 0.75rem;
+  background: #f9fafb;
+  border-right: 1.5px solid #e5e7eb;
+  border-radius: 12px 0 0 12px;
+  color: #4b5563;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.inputWithPrefix .input {
+  border: none;
+  box-shadow: none;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0 12px 12px 0;
+}
+
+.inputWithPrefix .input:focus {
+  box-shadow: none;
+}
+
+/* Logo Upload */
+.logoUpload {
+  width: 100%;
+}
+
+.uploadArea {
+  position: relative;
+  width: 100%;
+}
+
+.fileInput {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.uploadLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background: #f9fafb;
+  border: 2px dashed #e5e7eb;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.uploadLabel:hover {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.uploadIcon {
+  font-size: 2rem;
+}
+
+.uploadLabel span:not(.uploadHint) {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.uploadHint {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.logoPreview {
+  position: relative;
+  display: inline-block;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.previewImage {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 2px solid #e5e7eb;
+}
+
+.removeLogo {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.removeLogo:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+/* Hint Text */
+.hint {
+  color: #6b7280;
+  font-size: 0.688rem;
+  margin-left: 0.375rem;
+  margin-top: 0.125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* WhatsApp Preview */
+.whatsappPreview {
+  background: #f0f9f0;
+  border-radius: 16px;
+  padding: 1.25rem;
+  border: 1px solid #dcfce7;
+  margin-top: 0.5rem;
+}
+
+.previewHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: #059669;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.previewIcon {
+  font-size: 1.25rem;
+}
+
+.previewContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.previewMessage {
+  background: white;
+  padding: 0.75rem 1rem;
+  border-radius: 12px 12px 12px 4px;
+  max-width: 80%;
+  align-self: flex-start;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  font-size: 0.875rem;
+}
+
+.previewMessageVendor {
+  background: #dcfce7;
+  padding: 0.75rem 1rem;
+  border-radius: 12px 12px 4px 12px;
+  max-width: 80%;
+  align-self: flex-end;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  font-size: 0.875rem;
+}
+
+/* Review Card */
+.reviewCard {
+  background: #f9fafb;
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.reviewSection {
+  margin-bottom: 1.5rem;
+}
+
+.reviewSection h3 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reviewGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.reviewItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.reviewLabel {
+  font-size: 0.688rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.reviewValue {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2937;
+  word-break: break-word;
+}
+
+.reviewActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Buttons */
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 14px;
+  font-size: 0.938rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.3px;
+  flex: 1;
+}
+
+.primaryButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.primaryButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -8px rgba(102, 126, 234, 0.4);
+}
+
+.primaryButton:hover:not(:disabled)::before {
+  width: 400px;
+  height: 400px;
+}
+
+.primaryButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.primaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.primaryButton:disabled::before {
+  display: none;
+}
+
+.secondaryButton {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  padding: 0.75rem 1.5rem;
+  border-radius: 14px;
+  font-size: 0.938rem;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  flex: 1;
+}
+
+.secondaryButton:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.secondaryButton:active {
+  transform: translateY(0);
+}
+
+.editButton {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-size: 0.813rem;
+  font-weight: 600;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.editButton:hover {
+  background: #f9fafb;
+  border-color: #667eea;
+  color: #667eea;
+}
+
+/* Terms Checkbox */
+.termsCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+}
+
+.termsCheckbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 2px solid #d1d5db;
+  cursor: pointer;
+  accent-color: #667eea;
+}
+
+.termsCheckbox label {
+  font-size: 0.813rem;
+  color: #4b5563;
+}
+
+.termsCheckbox a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.termsCheckbox a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Loading State */
+.loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: white;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .progressContainer {
+    margin-bottom: 1.5rem;
+  }
+
+  .step span {
+    display: none;
+  }
+
+  .stepNumber {
+    width: 32px;
+    height: 32px;
+    font-size: 0.875rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+    border-radius: 24px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .reviewGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+
+  .reviewActions {
+    flex-direction: column;
+  }
+
+  .editButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: linear-gradient(135deg, #1a1f36 0%, #2d2f45 100%);
+  }
+
+  .card {
+    background: rgba(17, 24, 39, 0.98);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .title {
+    background: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: #9ca3af;
+  }
+
+  .label {
+    color: #e5e7eb;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    background: #1f2937;
+    border-color: #374151;
+    color: white;
+  }
+
+  .input:hover,
+  .select:hover,
+  .textarea:hover {
+    border-color: #4b5563;
+  }
+
+  .input:focus,
+  .select:focus,
+  .textarea:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+  }
+
+  .input::placeholder,
+  .textarea::placeholder {
+    color: #6b7280;
+  }
+
+  .accountInfo {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .infoLabel {
+    color: #9ca3af;
+  }
+
+  .infoValue {
+    color: white;
+  }
+
+  .uploadLabel {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .uploadLabel:hover {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+  }
+
+  .uploadLabel span:not(.uploadHint) {
+    color: white;
+  }
+
+  .whatsappPreview {
+    background: rgba(5, 150, 105, 0.1);
+    border-color: rgba(5, 150, 105, 0.2);
+  }
+
+  .previewMessage {
+    background: #1f2937;
+    color: white;
+  }
+
+  .previewMessageVendor {
+    background: rgba(5, 150, 105, 0.2);
+    color: white;
+  }
+
+  .reviewCard {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .reviewSection h3 {
+    color: white;
+  }
+
+  .reviewLabel {
+    color: #9ca3af;
+  }
+
+  .reviewValue {
+    color: white;
+  }
+
+  .reviewActions {
+    border-top-color: #374151;
+  }
+
+  .secondaryButton {
+    background: #1f2937;
+    border-color: #374151;
+    color: white;
+  }
+
+  .secondaryButton:hover {
+    background: #2d3748;
+    border-color: #4b5563;
+  }
+
+  .editButton {
+    background: #1f2937;
+    border-color: #374151;
+    color: #9ca3af;
+  }
+
+  .editButton:hover {
+    background: #2d3748;
+    border-color: #667eea;
+    color: #818cf8;
+  }
+
+  .termsCheckbox {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .termsCheckbox label {
+    color: #9ca3af;
+  }
+
+  .hint {
+    color: #9ca3af;
+  }
+
+  .select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  }
+
+  .inputWithPrefix {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .prefix {
+    background: #2d3748;
+    border-right-color: #374151;
+    color: #9ca3af;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stepContent {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    background: #1f2937;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+}

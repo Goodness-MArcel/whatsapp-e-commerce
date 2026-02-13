@@ -2,20 +2,36 @@
   "name": "crud",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync": "node script/sync.js",
+    "seed:admin": "node script/seedAdmin.js"
   },
   "dependencies": {
+    "axios": "^1.13.4",
+    "bcrypt": "^6.0.0",
+    "bootstrap": "^5.3.8",
+    "cloudinary": "^2.9.0",
+    "dotenv": "^17.2.4",
+    "jsonwebtoken": "^9.0.3",
+    "lucide-react": "^0.563.0",
     "next": "16.1.6",
+    "next-cloudinary": "^6.17.5",
+    "pg": "^8.18.0",
+    "pg-hstore": "^2.3.4",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "19.2.3",
+    "sequelize": "^6.37.7"
   },
   "devDependencies": {
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6"
+    "eslint-config-next": "16.1.6",
+    "sequelize-cli": "^6.6.5"
   }
 }
