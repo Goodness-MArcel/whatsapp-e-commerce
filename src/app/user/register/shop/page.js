@@ -38,6 +38,7 @@ export default function StoreRegistration() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [storeData, setStoreData] = useState({
     storeName: "",
     storeCategory: "",
@@ -49,18 +50,26 @@ export default function StoreRegistration() {
     logo: null
   });
   const [isLoading, setIsLoading] = useState(false);
-  const user = JSON.parse(sessionStorage.getItem("pendingRegistration"));
-// console.log(pending.userId, pending.email);
-console.log("Pending registration data:", user);
 
- let userId = user ? user.userId : null;
+  // Move all sessionStorage access inside useEffect
   useEffect(() => {
-    const pending = sessionStorage.getItem("pendingRegistration");
-    if (!pending) {
-      router.push("/user/register");
-      return;
+    // Check if we're in browser environment
+    if (typeof window !== 'undefined') {
+      const pending = sessionStorage.getItem("pendingRegistration");
+      if (!pending) {
+        router.push("/user/register");
+        return;
+      }
+      try {
+        const parsedUser = JSON.parse(pending);
+        setUserData(parsedUser);
+        setUserId(parsedUser.userId);
+        console.log("Pending registration data:", parsedUser);
+      } catch (error) {
+        console.error("Error parsing pending registration:", error);
+        router.push("/user/register");
+      }
     }
-    setUserData(JSON.parse(pending));
   }, [router]);
 
   const categories = [
@@ -133,9 +142,12 @@ console.log("Pending registration data:", user);
         throw new Error(data.message || "Store registration failed");
       }
 
-      sessionStorage.removeItem("pendingRegistration");
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("storeId", data.storeId || data.shopId || "");
+      // These will only run on client side
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem("pendingRegistration");
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("storeId", data.storeId || data.shopId || "");
+      }
       
       router.push("/user/login");
       

@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {Link} from "next/link";
+import Link from "next/link";
 import Image from "next/image";
 import {
   User,
@@ -320,3 +320,6 @@ export default function RegisterForm() {
     </div>
   );
 }
+// export default function Page() {
+//   return <div>Test Page</div>;
+// }
