@@ -1,45 +1,93 @@
+
 import { NextResponse } from "next/server";
 import { verify } from "jsonwebtoken";
 import { validateEnv, JWT_SECRET } from "./lib/env.js";
 
-// Validate environment on startup
 validateEnv();
-
-const protectedRoutes = ["/admin", "/dashboard", "/profile"];
-const authRoutes = ["/auth/login", "/auth/register"];
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("token")?.value;
 
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  const isAdminRoute = pathname.startsWith("/admin");
+  const isUserProtectedRoute =
+    pathname.startsWith("/user/dashboard");
 
-  const isAuthRoute = authRoutes.includes(pathname);
+  const isUserAuthRoute =
+    pathname === "/user/login" ||
+    pathname === "/user/register";
 
-  // Protected route without token → redirect to login
-  if (isProtectedRoute && !token) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+  const isAdminAuthRoute =
+    pathname === "/auth/login" ||
+    pathname === "/auth/register";
+
+  // No token
+  if (!token) {
+    if (isAdminRoute) {
+      return NextResponse.redirect(
+        new URL("/auth/login", request.url)
+      );
+    }
+
+    if (isUserProtectedRoute) {
+      return NextResponse.redirect(
+        new URL("/user/login", request.url)
+      );
+    }
+
+    return NextResponse.next();
   }
 
-  // Handle token verification
-  if (token) {
-    try {
-      verify(token, JWT_SECRET);
+  try {
+    const decoded = verify(token, JWT_SECRET);
+    const role = decoded.role;
 
-      // Authenticated user trying to access login/register → redirect to admin
-      if (isAuthRoute) {
-        return NextResponse.redirect(new URL("/admin", request.url));
-      }
-    } catch {
-      // Invalid token on protected route → clear cookie and redirect
-      if (isProtectedRoute) {
-        const response = NextResponse.redirect(new URL("/auth/login", request.url));
-        response.cookies.delete("token");
-        return response;
+    // USER trying to access admin area
+    if (isAdminRoute && role !== "admin") {
+      return NextResponse.redirect(
+        new URL("/user/login", request.url)
+      );
+    }
+
+    // ADMIN trying to access user dashboard
+    if (isUserProtectedRoute && role !== "user") {
+      return NextResponse.redirect(
+        new URL("/admin", request.url)
+      );
+    }
+
+    //Logged in users visiting login/register pages
+    if (isAdminAuthRoute) {
+      if (role === "admin") {
+        return NextResponse.redirect(
+          new URL("/admin", request.url)
+        );
+      } else {
+        return NextResponse.redirect(
+          new URL("/user/dashboard", request.url)
+        );
       }
     }
+
+    if (isUserAuthRoute) {
+      if (role === "user") {
+        return NextResponse.redirect(
+          new URL("/user/dashboard", request.url)
+        );
+      } else {
+        return NextResponse.redirect(
+          new URL("/admin", request.url)
+        );
+      }
+    }
+
+  } catch (err) {
+    // ❌ Invalid token
+    const response = NextResponse.redirect(
+      new URL("/user/login", request.url)
+    );
+    response.cookies.delete("token");
+    return response;
   }
 
   return NextResponse.next();
@@ -48,9 +96,12 @@ export async function middleware(request) {
 export const config = {
   matcher: [
     "/admin/:path*",
+    "/user/:path*",
+    "/user/login",
+    "/user/register",
     "/auth/login",
     "/auth/register",
   ],
 };
 
-export const runtime = 'nodejs';
+export const runtime = "nodejs";

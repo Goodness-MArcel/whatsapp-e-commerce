@@ -12,10 +12,12 @@ import Admin from "./Admin.js";
 User.hasOne(Store, {
   foreignKey: "userId",
   onDelete: "CASCADE",
+  as: "store",
 });
 
 Store.belongsTo(User, {
   foreignKey: "userId",
+  as: "user", 
 });
 
 /*

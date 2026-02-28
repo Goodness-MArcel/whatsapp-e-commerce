@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import axios from "axios";  
 import Link from "next/link";
 import { 
   Mail, 
@@ -65,11 +66,9 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+     let response = await axios.post("/user/api/auth/login", formData);
       // Success - redirect to dashboard
-      router.push("/vendor/dashboard");
+      router.push("/user/dashboard");
       
     } catch (error) {
       setErrors({ submit: "Invalid email or password" });
@@ -211,7 +210,7 @@ export default function LoginPage() {
           {/* Register Link */}
           <p className={styles.registerPrompt}>
             Don't have an account?{" "}
-            <Link href="/register" className={styles.registerLink}>
+            <Link href="/user/register" className={styles.registerLink}>
               Create your vendor account
               <ArrowRight size={14} />
             </Link>

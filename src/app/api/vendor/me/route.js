@@ -1,9 +1,12 @@
-import { NextResponse } from "next/server";
-import { verify } from "jsonwebtoken";
-import { sequelize } from "@/lib/db";
-import { JWT_SECRET } from "@/lib/env.js";
 
+import { NextResponse } from "next/server";
+import { JWT_SECRET } from "@/lib/env.js";
+import { verify } from "jsonwebtoken";
+// import User from "@/models/User";
+// import  Store from "@/models/Store";
+import {User, Store} from "@/models/index.js"; // Importing both User and Store models
 export async function GET(request) {
+  const baseUrl = request.nextUrl.origin; 
   try {
     // Get token from cookies
     const token = request.cookies.get("token")?.value;
@@ -18,24 +21,28 @@ export async function GET(request) {
     // Verify token
     const decoded = verify(token, JWT_SECRET);
 
-    // Get vendor/user from database
-    const userQuery = `SELECT id, name, email, created_at FROM users WHERE id = $1`;
-    const userResult = await sequelize.query(userQuery, [decoded.id]);
+    // Get vendor/user with their store using Sequelize include
+    const user = await User.findByPk(decoded.id, {
+      attributes: ['id', 'name', 'email'],
+      include: [{
+        model: Store,
+        as: 'store', // Make sure this matches your association alias
+        required: false // LEFT JOIN to get user even if no store
+      }]
+    });
 
-    if (userResult[0].length === 0) {
+    console.log("Fetched user with store:", user);
+
+    if (!user) {
       return NextResponse.json(
         { message: "User not found" },
         { status: 404 }
       );
     }
 
-    const user = userResult[0][0];
+    const store = user.store;
 
-    // Get vendor's store data
-    const storeQuery = `SELECT * FROM stores WHERE "userId" = $1`;
-    const storeResult = await sequelize.query(storeQuery, [decoded.id]);
-
-    if (storeResult[0].length === 0) {
+    if (!store) {
       return NextResponse.json(
         {
           id: user.id,
@@ -47,8 +54,6 @@ export async function GET(request) {
         { status: 200 }
       );
     }
-
-    const store = storeResult[0][0];
 
     return NextResponse.json(
       {
@@ -65,14 +70,13 @@ export async function GET(request) {
           address: store.address,
           description: store.description,
           logo: store.logo,
-          slug: store.slug,
-          createdAt: store.createdAt,
-          updatedAt: store.updatedAt,
+          slug: store.slug
         },
       },
       { status: 200 }
     );
   } catch (error) {
+    // Error handling remains the same
     if (process.env.NODE_ENV === "development") {
       console.error("Get vendor error:", error.message);
     }

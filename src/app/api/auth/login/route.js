@@ -1,4 +1,3 @@
-// app/api/auth/login/route.js
 
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";

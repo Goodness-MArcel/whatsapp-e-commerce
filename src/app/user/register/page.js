@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {Link} from "next/link";
 import Image from "next/image";
 import {
   User,
@@ -310,9 +311,9 @@ export default function RegisterForm() {
 
           <p className={styles.loginLink}>
             Already have an account?{" "}
-            <a href="/login" className={styles.link}>
+            <Link href="/user/login" className={styles.link}>
               Sign in <ChevronRight size={12} />
-            </a>
+            </Link>
           </p>
         </form>
       </div>
