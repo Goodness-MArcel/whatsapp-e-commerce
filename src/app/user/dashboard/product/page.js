@@ -32,8 +32,9 @@ import {
 import { Dropdown } from "react-bootstrap";
 
 function Products() {
-  const { userInfo, products: contextProducts } = useUser();
-
+  const { userInfo} = useUser();
+ let contextProducts = userInfo?.store?.products;
+ console.log('cominf p', contextProducts)
   const [viewMode, setViewMode] = useState("grid");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,7 +72,7 @@ function Products() {
   const storeId = userInfo?.store?.id;
 
   // Extract products array from context response
-  const productsArray = contextProducts?.products || [];
+  const productsArray = contextProducts || [];
 
   // Process products from context
   useEffect(() => {

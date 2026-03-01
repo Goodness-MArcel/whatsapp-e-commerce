@@ -399,7 +399,7 @@ export default function StoreContent({ storeData, storeSlug }) {
                   {viewMode === "grid" ? (
                     <div className="row g-3">
                       {filteredProducts.map((product) => (
-                        <div key={product.id} className="col-md-4 col-sm-6">
+                        <div key={product.id} className="col-6 col-md-4">
                           <div className="card h-100 border-0 shadow-sm hover-shadow transition-all">
                             <Link
                               href={`/store/${storeSlug}/product/${product.id}`}

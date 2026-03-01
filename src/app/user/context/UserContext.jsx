@@ -12,14 +12,15 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const [vendor,vendorProducts] = await Promise.all([
-          axios.get("/api/vendor/me"),
-          axios.get("/user/api/auth/products")
-        ]);
+        const vendor = await  axios.get("/api/vendor/me");
+         
+          // axios.get("/user/api/auth/products")
+        let vendorsProducts = vendor.data.store.products
+
         setUserInfo(vendor.data);
-        setProducts(vendorProducts.data);
-        console.log("Fetched user info:", vendor.data);
-        console.log("Fetched products:", vendorProducts.data);
+        setProducts(vendorsProducts);
+        // console.log("Fetched user info:", vendor.data);
+        // console.log("Fetched products:", vendorProducts.data);
       } catch (err) {
         setError(err.message);
       } finally {

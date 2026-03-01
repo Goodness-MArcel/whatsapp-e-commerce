@@ -458,7 +458,9 @@ import {
 } from "lucide-react";
 
 export default function VendorDashboard() {
-  const { userInfo, products } = useUser();
+  const { userInfo } = useUser();
+ let products = userInfo?.store?.products;
+ console.log(products)
   const storeId = userInfo?.store?.id || "default-store-id";
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -487,30 +489,9 @@ export default function VendorDashboard() {
     { customer: "Anna", items: "3 items", total: "$67", time: "3 hours ago" },
   ];
 
-  // Sample recent products data
-  const recentProducts = [
-    {
-      id: 1,
-      name: "Wireless Headphones",
-      price: "79.99",
-      addedTime: "2 hours ago",
-      image: "/api/placeholder/50/50",
-    },
-    {
-      id: 2,
-      name: "Cotton T-Shirt",
-      price: "24.99",
-      addedTime: "Yesterday",
-      image: null,
-    },
-    {
-      id: 3,
-      name: "Coffee Mug",
-      price: "12.99",
-      addedTime: "2 days ago",
-      image: "/api/placeholder/50/50",
-    },
-  ];
+  
+
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -631,7 +612,7 @@ export default function VendorDashboard() {
         <div className="col-4">
           <div className="bg-light rounded-3 p-3 text-center">
             <Package size={20} className="text-success mx-auto mb-1" />
-            <h4 className="fw-bold mb-0">{products.total}</h4>
+            <h4 className="fw-bold mb-0">{products.length}</h4>
             <small className="text-secondary">Products</small>
           </div>
         </div>
@@ -674,7 +655,7 @@ export default function VendorDashboard() {
       {!showAddProduct ? (
         <>
           {/* Recent Products Component */}
-          <RecentProducts products={products?.products} />
+          <RecentProducts products={products} />
 
           {/* Recent Orders */}
           <div className="mb-4">
