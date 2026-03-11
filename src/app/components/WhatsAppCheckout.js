@@ -2,10 +2,18 @@
 
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
-import { MessageCircle, X, ShoppingBag, Check, AlertCircle, Store } from "lucide-react";
+import {
+  MessageCircle,
+  X,
+  ShoppingBag,
+  Check,
+  AlertCircle,
+  Store,
+} from "lucide-react";
 
 export default function WhatsAppCheckout({ storeData, onClose }) {
-  const { cart, getCartTotal, getCartCount, getWhatsAppMessage, clearCart } = useCart();
+  const { cart, getCartTotal, getCartCount, getWhatsAppMessage, clearCart } =
+    useCart();
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
 
@@ -18,30 +26,55 @@ export default function WhatsAppCheckout({ storeData, onClose }) {
     setIsSending(true);
 
     // Format phone number (remove non-digits)
-    const vendorNumber = storeData.whatsappNumber.replace(/\D/g, '');
-    
-    // Generate message
+    const vendorNumber = storeData.whatsappNumber.replace(/\D/g, "");
+
+    if (!vendorNumber) {
+      alert("Vendor number not available");
+      return;
+    }
+
+    let fullNumber = vendorNumber;
+    const country_code = "234";
+
+    // Remove leading zero if present (common in Nigerian numbers)
+    const numberWithoutLeadingZero = vendorNumber.startsWith("0")
+      ? vendorNumber.substring(1)
+      : vendorNumber;
+
+    // Check if number already has country code
+    if (!numberWithoutLeadingZero.startsWith("234")) {
+      fullNumber = country_code + numberWithoutLeadingZero;
+    } else {
+      fullNumber = numberWithoutLeadingZero;
+    }
+
+    // Add + prefix
+    fullNumber = "+" + fullNumber;
+
+    // Generate message with cart items
     const message = getWhatsAppMessage(storeData.storeName);
-    
+
     // Create WhatsApp URL
-    const whatsappUrl = `https://wa.me/${vendorNumber}?text=${encodeURIComponent(message)}`;
-    
+    const whatsappUrl = `https://wa.me/${fullNumber}?text=${encodeURIComponent(message)}`;
+
     // Open WhatsApp in new tab
-    window.open(whatsappUrl, '_blank');
-    
+    window.open(whatsappUrl, "_blank");
+
     // Optional: Clear cart after successful redirect
     setTimeout(() => {
       clearCart();
       onClose();
+      setIsSending(false);
     }, 1000);
   };
-
   if (cart.length === 0) {
     return (
       <div className="p-4 text-center">
         <ShoppingBag size={48} className="text-secondary mb-3 mx-auto" />
         <h5>Your cart is empty</h5>
-        <p className="text-secondary small mb-3">Add some products to checkout</p>
+        <p className="text-secondary small mb-3">
+          Add some products to checkout
+        </p>
         <button className="btn btn-success btn-sm" onClick={onClose}>
           Continue Shopping
         </button>
@@ -57,7 +90,7 @@ export default function WhatsAppCheckout({ storeData, onClose }) {
           <MessageCircle size={20} className="text-success" />
           <h6 className="mb-0 fw-semibold">WhatsApp Checkout</h6>
         </div>
-        <button 
+        <button
           className="btn btn-sm btn-light rounded-circle p-1"
           onClick={onClose}
           style={{ width: "28px", height: "28px" }}
@@ -70,11 +103,17 @@ export default function WhatsAppCheckout({ storeData, onClose }) {
       <div className="p-3">
         <div className="bg-light rounded-3 p-3 mb-3">
           <h6 className="small fw-semibold mb-3">Order Summary</h6>
-          
+
           {cart.map((item) => (
-            <div key={item.id} className="d-flex justify-content-between align-items-center mb-2">
+            <div
+              key={item.id}
+              className="d-flex justify-content-between align-items-center mb-2"
+            >
               <div className="d-flex align-items-center gap-2">
-                <span className="badge bg-success rounded-circle" style={{ width: "20px", height: "20px" }}>
+                <span
+                  className="badge bg-success rounded-circle"
+                  style={{ width: "20px", height: "20px" }}
+                >
                   {item.quantity}
                 </span>
                 <span className="small">{item.name}</span>
@@ -86,10 +125,12 @@ export default function WhatsAppCheckout({ storeData, onClose }) {
           ))}
 
           <hr className="my-2" />
-          
+
           <div className="d-flex justify-content-between align-items-center">
             <span className="fw-semibold">Total ({getCartCount()} items)</span>
-            <span className="h5 text-success mb-0">${getCartTotal().toFixed(2)}</span>
+            <span className="h5 text-success mb-0">
+              ${getCartTotal().toFixed(2)}
+            </span>
           </div>
         </div>
 
@@ -117,7 +158,10 @@ export default function WhatsAppCheckout({ storeData, onClose }) {
         {/* Message Preview */}
         <div className="bg-light rounded-3 p-3 mb-3">
           <h6 className="small fw-semibold mb-2">Message Preview:</h6>
-          <div className="small text-secondary" style={{ whiteSpace: "pre-line" }}>
+          <div
+            className="small text-secondary"
+            style={{ whiteSpace: "pre-line" }}
+          >
             {getWhatsAppMessage(storeData?.storeName)}
           </div>
         </div>
@@ -131,7 +175,10 @@ export default function WhatsAppCheckout({ storeData, onClose }) {
           >
             {isSending ? (
               <>
-                <span className="spinner-border spinner-border-sm" role="status" />
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                />
                 Opening WhatsApp...
               </>
             ) : (
@@ -141,10 +188,7 @@ export default function WhatsAppCheckout({ storeData, onClose }) {
               </>
             )}
           </button>
-          <button
-            className="btn btn-outline-secondary py-1"
-            onClick={onClose}
-          >
+          <button className="btn btn-outline-secondary py-1" onClick={onClose}>
             Cancel
           </button>
         </div>
