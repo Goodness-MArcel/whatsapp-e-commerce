@@ -16,7 +16,8 @@ import {
   CreditCard,
   Smartphone,
   MessageCircle,
-  Store
+  Store,
+  CheckCircle
 } from "lucide-react";
 import styles from "./Footer.module.css";
 
