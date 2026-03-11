@@ -1,9 +1,11 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const userContext = createContext();
 
 export const UserProvider = ({ children }) => {
+  const router = useRouter();
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +15,7 @@ export const UserProvider = ({ children }) => {
     const fetchUserInfo = async () => {
       try {
         const vendor = await axios.get("/api/vendor/me");
-        
+
         let vendorsProducts = vendor.data.store.products;
         setUserInfo(vendor.data);
         setProducts(vendorsProducts);
@@ -27,9 +29,16 @@ export const UserProvider = ({ children }) => {
     fetchUserInfo();
   }, []);
 
-  const logout = async () => {
+  const handleLogout = async () => {
     try {
-    } catch (errror) {}
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      router.push("/auth/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   if (loading) {
@@ -49,7 +58,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <userContext.Provider
-      value={{ userInfo, loading, error, products, setProducts }}
+      value={{ userInfo, loading, error, products, setProducts , handleLogout}}
     >
       {children}
     </userContext.Provider>

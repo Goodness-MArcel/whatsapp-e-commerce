@@ -17,7 +17,7 @@ import {
 
 // Create a separate component for the content that uses the context
 function LayoutContent({ children, sidebarOpen, setSidebarOpen }) {
-  const { userInfo, loading, error } = useUser();
+  const { userInfo, loading, error, handleLogout } = useUser();
   const pathname = usePathname();
   const navItems = [
     {
@@ -87,7 +87,7 @@ function LayoutContent({ children, sidebarOpen, setSidebarOpen }) {
             <span className="text-secondary me-3 d-none d-md-inline">
               Welcome, {userInfo?.name || "Guest"}
             </span>
-            <button className="btn btn-outline-success btn-sm d-flex align-items-center gap-2">
+            <button className="btn btn-outline-success btn-sm d-flex align-items-center gap-2" onClick={handleLogout}>
               <LogOut size={16} />
               <span>Logout</span>
             </button>

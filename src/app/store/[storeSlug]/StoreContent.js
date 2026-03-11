@@ -678,6 +678,8 @@ import {
   Check,
   X,
 } from "lucide-react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 
 export default function StoreContent({ storeData, storeSlug }) {
   const [viewMode, setViewMode] = useState("grid");
@@ -760,6 +762,27 @@ export default function StoreContent({ storeData, storeSlug }) {
   ];
 
   const cartCount = getCartCount();
+
+  // Function to format WhatsApp number
+const formatWhatsAppNumber = (number) => {
+  const countryCode = "234";
+  const cleanNumber = number.replace(/\D/g, "");
+  
+  // Check if number already has country code
+  if (cleanNumber.startsWith("234")) {
+    return cleanNumber;
+  }
+  
+  // Remove leading zero if present
+  const numberWithoutZero = cleanNumber.startsWith("0") 
+    ? cleanNumber.substring(1) 
+    : cleanNumber;
+    
+  return countryCode + numberWithoutZero;
+};
+
+// In your JSX
+
 
   return (
     <>
@@ -920,12 +943,13 @@ export default function StoreContent({ storeData, storeSlug }) {
                 </button>
                 {storeData.whatsappNumber && (
                   <a
-                    href={`https://wa.me/${storeData.whatsappNumber.replace(/\D/g, "")}`}
+                    href={`https://wa.me/${formatWhatsAppNumber(storeData.whatsappNumber)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-success btn-sm"
                   >
-                    <MessageCircle size={16} className="me-1" />
+                    {/* <MessageCircle size={16} className="me-1" /> */}
+                    <FontAwesomeIcon icon={faWhatsapp} className="text-light me-1" size="lg" />
                     Contact via WhatsApp
                   </a>
                 )}
@@ -1147,7 +1171,7 @@ export default function StoreContent({ storeData, storeSlug }) {
                               
                               <div className="d-flex align-items-center justify-content-between mt-2">
                                 <span className="fw-bold text-success fs-5">
-                                  ${parseFloat(product.price).toFixed(2)}
+                                  ₦{parseFloat(product.price).toFixed(2)}
                                 </span>
                                 <button
                                   className={`btn btn-sm ${
@@ -1216,7 +1240,7 @@ export default function StoreContent({ storeData, storeSlug }) {
                               </div>
                             </div>
                             <div className="col-3 text-end">
-                              <div className="fw-bold text-success">${parseFloat(product.price).toFixed(2)}</div>
+                              <div className="fw-bold text-success">₦{parseFloat(product.price).toFixed(2)}</div>
                               <button
                                 className={`btn btn-sm mt-1 ${
                                   addedToCart[product.id] ? "btn-success" : "btn-outline-success"
