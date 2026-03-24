@@ -35,7 +35,7 @@ export async function POST(req) {
     // Get the app URL from environment or use default
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 
                    (process.env.NODE_ENV === 'production' 
-                     ? 'https://yourdomain.com' 
+                     ? 'https://whatsapp-e-commerce.vercel.app' 
                      : 'http://localhost:3000');
 
     // Initialize Paystack payment
