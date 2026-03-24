@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { Check, AlertCircle, Loader } from "lucide-react";
 
-export default function PaymentSuccess() {
+// Inner Component (this one uses useSearchParams)
+function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const reference = searchParams.get("reference");
   const [status, setStatus] = useState("verifying");
@@ -94,5 +95,22 @@ export default function PaymentSuccess() {
         )}
       </div>
     </div>
+  );
+}
+
+// Main Page with Suspense Boundary (This fixes the build error)
+export default function PaymentSuccess() {
+  return (
+    <Suspense fallback={
+      <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+        <div className="text-center">
+          <Loader size={64} className="text-primary animate-spin mx-auto mb-4" />
+          <h4>Verifying your payment...</h4>
+          <p className="text-muted">Please wait a moment</p>
+        </div>
+      </div>
+    }>
+      <PaymentSuccessContent />
+    </Suspense>
   );
 }
