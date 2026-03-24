@@ -8,7 +8,7 @@ import { useUser } from "../../context/UserContext";
 import { Copy, CheckCircle } from "lucide-react";
 
 function Profile() {
-  const { userInfo } = useUser();
+  const { userInfo, Order } = useUser();
   
   const [activeTab, setActiveTab] = useState("profile");
   const [copied, setCopied] = useState(false);
@@ -150,7 +150,7 @@ function Profile() {
                     <div>
                       <h6 className="text-muted mb-1 small">Total Sales</h6>
                       <h4 className="mb-0 fw-bold">
-                        {accountStats.totalSales}
+                        {Order.length}
                       </h4>
                     </div>
                   </div>

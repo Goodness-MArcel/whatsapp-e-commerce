@@ -4,6 +4,7 @@ import "../models/Store.js";
 import "../models/User.js";
 import "../models/Product.js";
 import "../models/Admin.js";
+import "../models/Order.js";
 
 export async function syncDatabase() {
   try {

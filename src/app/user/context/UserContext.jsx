@@ -10,15 +10,20 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [products, setProducts] = useState([]);
+  const[Order, setOreders] = useState([]);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         const vendor = await axios.get("/api/vendor/me");
+        console.log(vendor);
 
         let vendorsProducts = vendor.data.store.products;
+      let vendorsOrders = vendor.data.store.orders;
+      console.log('the oders',vendorsOrders);
         setUserInfo(vendor.data);
         setProducts(vendorsProducts);
+        setOreders(vendorsOrders);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -58,7 +63,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <userContext.Provider
-      value={{ userInfo, loading, error, products, setProducts , handleLogout}}
+      value={{ userInfo, loading, error, products, setProducts ,Order, handleLogout}}
     >
       {children}
     </userContext.Provider>

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { JWT_SECRET } from "@/lib/env.js";
 import { verify } from "jsonwebtoken";
-import { User, Store, Product } from "@/models/index.js";
+import { User, Store, Product , Order} from "@/models/index.js";
 
 export async function GET(request) {
   try {
@@ -17,6 +17,7 @@ export async function GET(request) {
     const decoded = verify(token, JWT_SECRET);
 
     const user = await User.findByPk(decoded.id, {
+      logging: console.log,
       attributes: ["id", "name", "email"],
       include: [
         {
@@ -28,7 +29,13 @@ export async function GET(request) {
               model: Product,
               required: false,
             },
+           {
+          model: Order,
+          as: 'orders',
+          required: false,
+        },
           ],
+        
         },
       ],
     });
@@ -59,7 +66,8 @@ export async function GET(request) {
               description: store.description,
               logo: store.logo,
               slug: store.slug,
-              products: store.Products || [], // 👈 IMPORTANT
+              products: store.Products || [],
+              orders: store.Orders || [], 
             }
           : null,
       },

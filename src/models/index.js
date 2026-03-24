@@ -2,6 +2,7 @@ import User from "./User.js";
 import Store from "./Store.js";
 import Product from "./Product.js";
 import Admin from "./Admin.js";
+import Order from "./Order.js";
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +36,22 @@ Product.belongsTo(Store, {
   foreignKey: "storeId",
 });
 
-export { User, Store, Product , Admin};
+/*
+|--------------------------------------------------------------------------
+| STORE ↔ ORDER (One-to-Many)
+|--------------------------------------------------------------------------
+*/
+
+Store.hasMany(Order, {
+  foreignKey: "storeId",    
+  onDelete: "CASCADE",       
+  as: "orders",             
+});
+
+Order.belongsTo(Store, {
+  foreignKey: "storeId",
+  as: "store",
+});
+
+
+export { User, Store, Product , Admin, Order};

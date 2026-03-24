@@ -458,7 +458,7 @@ import {
 } from "lucide-react";
 
 export default function VendorDashboard() {
-  const { userInfo } = useUser();
+  const { userInfo,Order } = useUser();
  let products = userInfo?.store?.products;
  console.log(products)
   const storeId = userInfo?.store?.id || "default-store-id";
@@ -619,7 +619,7 @@ export default function VendorDashboard() {
         <div className="col-4">
           <div className="bg-light rounded-3 p-3 text-center">
             <ShoppingBag size={20} className="text-success mx-auto mb-1" />
-            <h4 className="fw-bold mb-0">{store.orders}</h4>
+            <h4 className="fw-bold mb-0">{Order.length}</h4>
             <small className="text-secondary">Orders</small>
           </div>
         </div>
